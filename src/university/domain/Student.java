@@ -1,18 +1,41 @@
 package university.domain;
+import java.util.*;
 
+public class Student {
 
-public class Student extends User{
-    private int registrationDate;
+    private Date registrationDate;
     private double gpa;
-    private int totalEcts;
-    
-    public int getRegistrationDate() {
-        return registrationDate;
+    private int totalECTS;
+    private List<Enrollment> enrollments = new ArrayList<>();
+
+    public Student(Date registrationDate) {
+        this.registrationDate = registrationDate;
     }
-    public int gettotalEcts() {
-        return totalEcts;
+
+    public void addEnrollment(Enrollment e) {
+        enrollments.add(e);
     }
+
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
     public double getGpa() {
         return gpa;
+    }
+
+    public void setGpa(double gpa) {
+        this.gpa = gpa;
+    }
+
+    public int getTotalECTS() {
+        return totalECTS;
+    }
+
+    public void addECTS(int ects) {
+        this.totalECTS += ects;
+    }
+    public Date getRegistrationDate() {
+        return registrationDate;
     }
 }
