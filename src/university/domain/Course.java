@@ -8,6 +8,7 @@ public class Course {
     private String name;
     private int ects;
     private int maxStudents;
+    private List<Schedule> schedules = new ArrayList<>(); // lista de horarios do curso
     private Set<Course> prerequisites = new HashSet<>(); // pode ter varios pre-requisitos e sao diferentes sempre
 
     public Course(String code, String name, int ects, int maxStudents) {
@@ -17,6 +18,13 @@ public class Course {
         this.maxStudents = maxStudents;
     }
 
+    public void addSchedule(Schedule schedule) {
+        schedules.add(schedule);
+    }
+    public List<Schedule> getSchedules() {
+        return schedules;
+    }
+    
     public void addPrerequisite(Course c) {
         prerequisites.add(c);
     }
