@@ -15,7 +15,8 @@ public class Schedule {
         this.room = room;
     }
 
-    public boolean hasConflict(Schedule other) {
+    public boolean hasConflict(Schedule other) // verifica se ha conflito de horarios
+    {
         return dayOfWeek.equals(other.dayOfWeek) && startTime.isBefore(other.endTime) && endTime.isAfter(other.startTime);
     }
     public String getRoom() {

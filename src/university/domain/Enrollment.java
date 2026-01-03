@@ -7,7 +7,7 @@ public class Enrollment {
     private Date enrollmentDate;
     private double finalGrade;
     private Course course;
-    private List<Grade> grades = new ArrayList<>();
+    private List<Grade> grades = new ArrayList<>(); // uma inscrição pode ter varias notas
 
     public Enrollment(Date enrollmentDate, Course course) {
         this.enrollmentDate = enrollmentDate;

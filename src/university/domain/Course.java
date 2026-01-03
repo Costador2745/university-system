@@ -8,7 +8,7 @@ public class Course {
     private String name;
     private int ects;
     private int maxStudents;
-    private Set<Course> prerequisites = new HashSet<>();
+    private Set<Course> prerequisites = new HashSet<>(); // pode ter varios pre-requisitos e sao diferentes sempre
 
     public Course(String code, String name, int ects, int maxStudents) {
         this.code = code;

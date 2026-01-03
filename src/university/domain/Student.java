@@ -6,7 +6,7 @@ public class Student {
     private Date registrationDate;
     private double gpa;
     private int totalECTS;
-    private List<Enrollment> enrollments = new ArrayList<>();
+    private List<Enrollment> enrollments = new ArrayList<>(); // pode ter multiplas disciplinas
 
     public Student(Date registrationDate) {
         this.registrationDate = registrationDate;
