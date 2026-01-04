@@ -2,9 +2,15 @@ package university.service;
 
 import university.domain.*;
 
-public class GPAService {
 
-    private GradeCalculator calculator = new GradeCalculator();
+public class GPAService implements GradeObserver{
+    
+    private GradeCalculator calculator = new GradeCalculator(new AverageGradingStrategy());
+
+    @Override
+    public void onFinalGradeRecorded(Student student) {
+        updateStudentGPA(student);
+    }
 
     public double calculateGPA(Student student) 
     {

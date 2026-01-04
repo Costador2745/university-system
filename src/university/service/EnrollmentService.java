@@ -2,12 +2,30 @@ package university.service;
 
 import university.domain.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class EnrollmentService {
 
     private PrerequisiteValidator prerequisiteValidator = new PrerequisiteValidator(); //instancia pra checkar pre-requisitos
     private ScheduleService scheduleService = new ScheduleService(); //instancia pra checkar horarios
+    private List<GradeObserver> observers = new ArrayList<>();
+
+    //O EnrollmentService atua como Subject, notificando automaticamente o GPAService (Observer) sempre que uma nota final é registada, garantindo atualização automática do GPA.
+    public void addObserver(GradeObserver observer) {
+        observers.add(observer);
+    }
+
+    public void notifyFinalGradeRecorded(Student student) {
+        for (GradeObserver observer : observers) {
+            observer.onFinalGradeRecorded(student);
+        }
+    }
+    public void recordFinalGrade(Student student) 
+    {
+        notifyFinalGradeRecorded(student);
+    }
 
     public boolean enrollStudent(Student student, Course course) {
         if (!prerequisiteValidator.checkEligibility(student, course)) //verifica se cumpre pre requisitos
@@ -32,9 +50,10 @@ public class EnrollmentService {
         return true;
     }
 
-    public boolean cancelEnrollment(Student student, Course course) {
+    public boolean cancelEnrollment(Student student, Course course) 
+    {
         return student.getEnrollments()
-                .removeIf(e -> e.getCourse().equals(course)); //remove a inscrição cujo curso seja igual ao do argumento
+            .removeIf(e -> e.getCourse().equals(course)); //remove a inscrição cujo curso seja igual ao do argumento
     }
     public ScheduleService getScheduleService() {
         return scheduleService;
