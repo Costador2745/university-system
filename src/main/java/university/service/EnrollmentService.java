@@ -6,23 +6,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class EnrollmentService {
+public class EnrollmentService{
 
-    private PrerequisiteValidator prerequisiteValidator = new PrerequisiteValidator(); //instancia pra checkar pre-requisitos
-    private ScheduleService scheduleService = new ScheduleService(); //instancia pra checkar horarios
-    private List<GradeObserver> observers = new ArrayList<>();
+    private PrerequisiteValidator prerequisiteValidator = new PrerequisiteValidator(); // instancia pra checkar pre-requisitos | Este estudante pode se inscrever no curso?
+    private List<GradeObserver> observers = new ArrayList<>(); // O que deve acontecer quando uma nota final é registrada?
 
-    //O EnrollmentService atua como Subject, notificando automaticamente o GPAService (Observer) sempre que uma nota final é registada, garantindo atualização automática do GPA.
+    // O EnrollmentService  Subject, GPAService (Observer) sempre que uma nota final é registada.
     public void addObserver(GradeObserver observer) {
         observers.add(observer);
     }
 
-    public void notifyFinalGradeRecorded(Student student) {
+    public void notifyFinalGradeRecorded(Student student) // notifica os observadores quando uma nota final é registrada
+    {
         for (GradeObserver observer : observers) {
             observer.onFinalGradeRecorded(student);
         }
     }
-    public void recordFinalGrade(Student student) 
+    public void recordFinalGrade(Student student)  // nota oficialmente registrada
     {
         notifyFinalGradeRecorded(student);
     }
@@ -40,7 +40,7 @@ public class EnrollmentService {
                 {
                     if (s1.hasConflict(s2)) //verifica se ha conflito entre os dois horarios
                     {
-                    return false; // conflito encontrado
+                        return false; // conflito encontrado
                     }
                 }
             }
@@ -54,8 +54,5 @@ public class EnrollmentService {
     {
         return student.getEnrollments()
             .removeIf(e -> e.getCourse().equals(course)); //remove a inscrição cujo curso seja igual ao do argumento
-    }
-    public ScheduleService getScheduleService() {
-        return scheduleService;
     }
 }

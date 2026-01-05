@@ -15,7 +15,7 @@ public class GPAService implements GradeObserver{
     public double calculateGPA(Student student) 
     {
         return student.getEnrollments()
-                .stream()
+                .stream() 
                 .mapToDouble(e -> calculator.calculateFinalGrade(e)) //Converte cada inscrição em nota final
                 .average() // calcula a média das notas finais
                 .orElse(0);// se não houver notas, retorna 0

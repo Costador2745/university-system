@@ -9,7 +9,7 @@ public class Course {
     private int ects;
     private int maxStudents;
     private List<Schedule> schedules = new ArrayList<>(); // lista de horarios do curso
-    private Set<Course> prerequisites = new HashSet<>(); // pode ter varios pre-requisitos e sao diferentes sempre
+    private Set<Course> prerequisites = new HashSet<>();
 
     public Course(String code, String name, int ects, int maxStudents) {
         this.code = code;
