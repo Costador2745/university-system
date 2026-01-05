@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EnrollmentService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">university-system</a> &gt; <a href="index.source.html" class="el_package">university.service</a> &gt; <span class="el_source">EnrollmentService.java</span></div><h1>EnrollmentService.java</h1><pre class="source lang-java linenums">package university.service;
+
+import university.domain.*;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+<span class="fc" id="L9">public class EnrollmentService {</span>
+
+<span class="fc" id="L11">    private PrerequisiteValidator prerequisiteValidator = new PrerequisiteValidator(); //instancia pra checkar pre-requisitos</span>
+<span class="fc" id="L12">    private ScheduleService scheduleService = new ScheduleService(); //instancia pra checkar horarios</span>
+<span class="fc" id="L13">    private List&lt;GradeObserver&gt; observers = new ArrayList&lt;&gt;();</span>
+
+    //O EnrollmentService atua como Subject, notificando automaticamente o GPAService (Observer) sempre que uma nota final é registada, garantindo atualização automática do GPA.
+    public void addObserver(GradeObserver observer) {
+<span class="fc" id="L17">        observers.add(observer);</span>
+<span class="fc" id="L18">    }</span>
+
+    public void notifyFinalGradeRecorded(Student student) {
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        for (GradeObserver observer : observers) {</span>
+<span class="fc" id="L22">            observer.onFinalGradeRecorded(student);</span>
+<span class="fc" id="L23">        }</span>
+<span class="fc" id="L24">    }</span>
+    public void recordFinalGrade(Student student) 
+    {
+<span class="fc" id="L27">        notifyFinalGradeRecorded(student);</span>
+<span class="fc" id="L28">    }</span>
+
+    public boolean enrollStudent(Student student, Course course) {
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">        if (!prerequisiteValidator.checkEligibility(student, course)) //verifica se cumpre pre requisitos</span>
+        {
+<span class="nc" id="L33">            return false;</span>
+        }
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        for (Enrollment e : student.getEnrollments()) //percorre todas as inscrições do aluno</span>
+        {
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">            for (Schedule s1 : e.getCourse().getSchedules()) //percorre todos os horarios do curso da inscrição</span>
+            {
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">                for (Schedule s2 : course.getSchedules()) //percorre todos os horarios do curso que o aluno quer se inscrever</span>
+                {
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">                    if (s1.hasConflict(s2)) //verifica se ha conflito entre os dois horarios</span>
+                    {
+<span class="fc" id="L43">                    return false; // conflito encontrado</span>
+                    }
+<span class="nc" id="L45">                }</span>
+<span class="nc" id="L46">            }</span>
+<span class="nc" id="L47">        }</span>
+<span class="fc" id="L48">        Enrollment e = new Enrollment(new Date(), course); // cria uma nova inscrição com a data atual e curso escolhido</span>
+<span class="fc" id="L49">        student.addEnrollment(e); //adiciona a lista de inscrições do aluno</span>
+<span class="fc" id="L50">        return true;</span>
+    }
+
+    public boolean cancelEnrollment(Student student, Course course) 
+    {
+<span class="fc" id="L55">        return student.getEnrollments()</span>
+<span class="fc" id="L56">            .removeIf(e -&gt; e.getCourse().equals(course)); //remove a inscrição cujo curso seja igual ao do argumento</span>
+    }
+    public ScheduleService getScheduleService() {
+<span class="nc" id="L59">        return scheduleService;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
