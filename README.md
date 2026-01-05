@@ -29,6 +29,7 @@ Para compilar o projeto, executar no diretório university-system:
 
 ```bash
 mvn clean compile
+```
 
 
 
